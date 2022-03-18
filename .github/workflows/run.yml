@@ -26,6 +26,7 @@ jobs:
             --cloud-region=us-west1 \
             --cloud-type=e2-highcpu-2
   test:
+    needs: [setup]
     runs-on: [self-hosted, test]
     steps:           
       - uses: actions/checkout@v2
