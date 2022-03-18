@@ -17,6 +17,8 @@ jobs:
           workload_identity_provider: 'projects/200200923017/locations/global/workloadIdentityPools/gh-actions-pool/providers/github-actions'
           service_account: 'cml-runner@cml-pulse.iam.gserviceaccount.com'
       - uses: iterative/setup-cml@v1
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GCP_CML_RUNNER_KEY }}
       - run: |
           cml runner \
             --single \
