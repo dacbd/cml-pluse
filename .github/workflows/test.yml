@@ -12,9 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: iterative/setup-cml@v1
+      - name: deploy runner
         env:
           GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GCP_CML_RUNNER_KEY }}
-      - run: |
+        run: |
           cml runner \
             --single \
             --labels=test \
