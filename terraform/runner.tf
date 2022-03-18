@@ -41,6 +41,7 @@ resource "google_project_iam_custom_role" "cr" {
     "compute.instances.setTags",
     "compute.machineTypes.get",
     "compute.networks.get",
+    "compute.networks.create",
     "compute.networks.updatePolicy",
     "compute.subnetworks.use",
     "compute.subnetworks.useExternalIp",
