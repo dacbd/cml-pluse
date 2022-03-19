@@ -13,7 +13,7 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GCP_CML_RUNNER_KEY }}
         run: |
           cml runner \
-            --cml-version=git://github.com/iterative/cml.git#master \
+            --cml-version=github:iterative/cml.git#master \
             --single \
             --labels=test \
             --token=${{ secrets.DACBD_PAT }} \
