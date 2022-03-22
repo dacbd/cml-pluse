@@ -26,5 +26,5 @@ jobs:
         with:
           go-version: '1.17.x'
       - run: | 
-        pushd test
-        go run main.go
+          pushd test
+          go run main.go
