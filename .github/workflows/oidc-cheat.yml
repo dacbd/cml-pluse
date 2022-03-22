@@ -26,5 +26,8 @@ jobs:
         with:
           go-version: '1.17.x'
       - run: | 
+          cat $CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+          cat $GOOGLE_APPLICATION_CREDENTIALS
+          cat $GOOGLE_GHA_CREDS_PATH
           pushd test
           go run main.go
