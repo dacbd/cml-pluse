@@ -1,0 +1,29 @@
+name: Not OIDC Cheat Test
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: dacbd/gcpcc
+          path: test
+          ref: oidc-test
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: ${{ secrets.GCP_CML_RUNNER_KEY }}
+      #- uses: iterative/setup-cml@v1
+      - name: setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.17.x'
+      - run: | 
+          pushd test
+          go run main.go
