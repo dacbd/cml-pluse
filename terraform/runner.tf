@@ -47,6 +47,7 @@ resource "google_project_iam_custom_role" "cr" {
     "compute.subnetworks.useExternalIp",
     "compute.zoneOperations.get",
     "compute.zones.list",
+    "compute.zones.get", # gcpcc test
     "iam.serviceAccounts.actAs",
   ]
 }
