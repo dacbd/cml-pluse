@@ -1,2 +1,2 @@
 variable "gcp_project_id" {}
-variable "current_repo" {}
+variable "github_user_org" {}
