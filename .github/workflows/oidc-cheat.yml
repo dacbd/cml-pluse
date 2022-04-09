@@ -14,7 +14,7 @@ jobs:
         with:
           repository: dacbd/gcpcc
           path: test
-          ref: dev
+          ref: oidc-test
       - name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v0'
         with:
