@@ -5,6 +5,7 @@ resource "google_service_account" "cml-runner" {
 resource "google_project_iam_member" "cml-runner" {
   project = var.gcp_project_id
   role = google_project_iam_custom_role.cr.name
+  #role = "roles/compute.admin"
   member = "serviceAccount:${google_service_account.cml-runner.email}"
 }
 
@@ -21,6 +22,11 @@ data "google_iam_policy" "cml-runner" {
     role = "roles/iam.workloadIdentityUser"
     members = ["principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool_provider.github-actions.workload_identity_pool_id}/attribute.repository/${var.current_repo}"]
   }
+  #binding {
+  #  role = "roles/iam.serviceAccountTokenCreator"
+  #  members = [ "serviceAccount:${google_service_account.cml-runner.email}" ]
+  #  #members = ["principalSet://iam.googleapis.com/projects/${data.google_project.project.number}/locations/global/workloadIdentityPools/${google_iam_workload_identity_pool_provider.github-actions.workload_identity_pool_id}/attribute.repository/${var.current_repo}"]
+  #}
 }
 resource "google_project_iam_custom_role" "cr" {
   role_id = "cml_runner"
