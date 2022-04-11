@@ -54,7 +54,7 @@ jobs:
             --labels=test \
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=gcp \
-            --cloud-region=us-west1 \
+            --cloud-region=us-west \
             --cloud-type=e2-highcpu-2
   test:
     needs: [setup]
