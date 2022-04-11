@@ -48,9 +48,8 @@ jobs:
           workload_identity_provider: 'projects/200200923017/locations/global/workloadIdentityPools/gh-actions-pool/providers/github-actions'
           service_account: 'cml-runner@cml-pulse.iam.gserviceaccount.com'
       - run: |
-          pwd
-          ls -hal
-          cml/bin/cml.js runner \
+          pushd main
+          ../cml/bin/cml.js runner \
             --single \
             --labels=test \
             --token=${{ secrets.DACBD_PAT }} \
