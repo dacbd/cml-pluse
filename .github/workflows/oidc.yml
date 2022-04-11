@@ -10,15 +10,42 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      # tools
+      - uses: actions/checkout@v3
+        with:
+          repository: iterative/cml
+          path: cml
+
+      - uses: actions/checkout@v3
+        with:
+          repository: dacbd/terraform-provider-iterative
+          ref: gcp-oidc
+          path: terraform-provider-iterative
+
+      - name: setup go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.17.x'
+
+      - name: Hack together
+        run: |
+          echo "hack test together"
+          pushd terraform-provider-iterative
+          make build
+          make install
+          popd && pushd cml
+          npm install
+          sed -i 's/source = "iterative\/iterative"/source = "github.com\/iterative\/iterative"/g' src/terraform.js
+          sed -i 's/return template;/console.log(template);return template;/g' src/terraform.js
+          popd
+      #- uses: actions/checkout@v3
       - name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v0'
         with:
           workload_identity_provider: 'projects/200200923017/locations/global/workloadIdentityPools/gh-actions-pool/providers/github-actions'
           service_account: 'cml-runner@cml-pulse.iam.gserviceaccount.com'
-      - uses: iterative/setup-cml@v1
       - run: |
-          cml runner \
+          cml/bin/cml.js runner \
             --single \
             --labels=test \
             --token=${{ secrets.DACBD_PAT }} \
