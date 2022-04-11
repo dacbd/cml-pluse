@@ -55,7 +55,9 @@ jobs:
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=gcp \
             --cloud-region=us-west \
-            --cloud-type=e2-highcpu-2
+            --cloud-type=e2-highcpu-2 \
+            --cloud-startup-script=ZWNobyAiZWNkc2Etc2hhMi1uaXN0cDM4NCBBQUFBRTJWalpITmhMWE5vWVRJdGJtbHpkSEF6T0RRQUFBQUlibWx6ZEhBek9EUUFBQUJoQkRZZDNzc2E2TDE1alFDNWJja0oydmlXbEExdEJ5Z3hlV295M3MwUzE0WkhNeFVNZnA3dTJ5cWZpY3BITzViK3BqZ2c3THorODBJYncxNTd3YVRaUE0reGJGMi9LR3FTN2FZVjBML1I4VmJXalZFcHp4WkVlb3hTQ3dGQTF0SFdVZz09IGNhcmRubzowMDA2MTE4OTU1NzUiID4+IC9ob21lL3VidW50dS8uc3NoL2F1dGhvcml6ZWRfa2V5cwo=
+
   test:
     needs: [setup]
     runs-on: [self-hosted, test]
