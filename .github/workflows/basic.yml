@@ -9,6 +9,35 @@ permissions:
 
 
 jobs:
+  target-vpc:
+  # sg-075be0b69e2872a5e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: iterative/setup-cml@v1
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::548501963152:role/cml_pulse_runner
+          aws-region: us-west-2
+      - name: deploy runner
+        run: |
+          cml runner \
+            --single \
+            --labels=target_vpc \
+            --token=${{ secrets.DACBD_PAT }} \
+            --cloud=aws \
+            --cloud-region=us-west-2 \
+            --cloud-type=t3.small \
+            --cloud-aws-security-group=cml-target-rule \
+            --cloud-startup-script=ZWNobyAiZWNkc2Etc2hhMi1uaXN0cDM4NCBBQUFBRTJWalpITmhMWE5vWVRJdGJtbHpkSEF6T0RRQUFBQUlibWx6ZEhBek9EUUFBQUJoQkRZZDNzc2E2TDE1alFDNWJja0oydmlXbEExdEJ5Z3hlV295M3MwUzE0WkhNeFVNZnA3dTJ5cWZpY3BITzViK3BqZ2c3THorODBJYncxNTd3YVRaUE0reGJGMi9LR3FTN2FZVjBML1I4VmJXalZFcHp4WkVlb3hTQ3dGQTF0SFdVZz09IGNhcmRubzowMDA2MTE4OTU1NzUiID4+IC9ob21lL3VidW50dS8uc3NoL2F1dGhvcml6ZWRfa2V5cwo=
+  target-vpc-test:
+    needs: [target-vpc]
+    runs-on: [self-hosted, target_vpc]
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          which cml
+          cml --version
   aws-oidc:
     runs-on: ubuntu-latest
     steps:
@@ -28,12 +57,11 @@ jobs:
             --cloud-region=us-west-2 \
             --cloud-type=t3.small \
             --cloud-startup-script=ZWNobyAiZWNkc2Etc2hhMi1uaXN0cDM4NCBBQUFBRTJWalpITmhMWE5vWVRJdGJtbHpkSEF6T0RRQUFBQUlibWx6ZEhBek9EUUFBQUJoQkRZZDNzc2E2TDE1alFDNWJja0oydmlXbEExdEJ5Z3hlV295M3MwUzE0WkhNeFVNZnA3dTJ5cWZpY3BITzViK3BqZ2c3THorODBJYncxNTd3YVRaUE0reGJGMi9LR3FTN2FZVjBML1I4VmJXalZFcHp4WkVlb3hTQ3dGQTF0SFdVZz09IGNhcmRubzowMDA2MTE4OTU1NzUiID4+IC9ob21lL3VidW50dS8uc3NoL2F1dGhvcml6ZWRfa2V5cwo=
-            
-  test:
+  basic_aws_test:
     needs: [aws-oidc]
     runs-on: [self-hosted, basic_aws]
     steps:           
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: |
           which cml
           cml --version
