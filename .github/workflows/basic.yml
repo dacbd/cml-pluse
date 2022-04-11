@@ -22,7 +22,7 @@ jobs:
         run: |
           cml runner \
             --single \
-            --labels=test \
+            --labels=basic_aws \
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=aws \
             --cloud-region=us-west-2 \
@@ -31,7 +31,7 @@ jobs:
             
   test:
     needs: [aws-oidc]
-    runs-on: [self-hosted, test]
+    runs-on: [self-hosted, basic_aws]
     steps:           
       - uses: actions/checkout@v2
       - run: |
