@@ -38,7 +38,9 @@ jobs:
           sed -i 's/source = "iterative\/iterative"/source = "github.com\/iterative\/iterative"/g' src/terraform.js
           sed -i 's/return template;/console.log(template);return template;/g' src/terraform.js
           popd
-      #- uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        #with:
+        #  path: main
       - name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v0'
         with:
