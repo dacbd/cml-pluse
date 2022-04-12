@@ -56,4 +56,7 @@ jobs:
           cml --version
           cat $(which cml.sh)
           ls -hal $HOME
+          ls -hal $HOME/.cml
+          echo "break"
+          ls -hal $HOME/.terraform.d
 
