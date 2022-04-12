@@ -44,6 +44,8 @@ jobs:
           dir=$(ls /home/runner/.cml/)
           cd /home/runner/.cml/$dir
           ls -hal
+          cat .terraform.lock.hcl
+          cat main.tf
   tpi-version-test:
     needs: [tpi-version]
     runs-on: [self-hosted, tpi_version]
@@ -53,4 +55,5 @@ jobs:
           which cml
           cml --version
           cat $(which cml.sh)
+          ls -hal $HOME
 
