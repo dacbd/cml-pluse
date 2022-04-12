@@ -42,7 +42,7 @@ jobs:
             --cloud-region=us-west-2 \
             --cloud-type=t3.small
           dir=$(ls /home/runner/.cml/)
-          cd $dir
+          cd /home/runner/.cml/$dir
           ls -hal
   tpi-version-test:
     needs: [tpi-version]
