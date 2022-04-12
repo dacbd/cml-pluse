@@ -21,7 +21,7 @@ jobs:
       - name: Clean Up
         run: |
           states=$(aws ec2 describe-instances --region us-west-2 | jq '.Reservations[].Instances[].State.Name' | uniq)
-          if [ "$states" != '"terminated"' ] then;
+          if [ "$states" != '"terminated"' ]; then
             echo "$states"
             exit 1
           fi
