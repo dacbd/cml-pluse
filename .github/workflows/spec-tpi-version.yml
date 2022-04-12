@@ -1,0 +1,53 @@
+name: Basic
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:  
+  tpi-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          path: main
+      - name: Setup CML 
+        #uses: iterative/setup-cml@v1
+        uses: actions/checkout@v3
+        with:
+          repository: iterative/cml
+          ref: terraform-version
+          path: cml
+      - run: |
+          echo "install cml"
+          pushd cml
+          npm install
+          sed -i 's/return template;/console.log(template);return template;/g' src/terraform.js
+          popd
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::548501963152:role/cml_pulse_runner
+          aws-region: us-west-2
+      - name: deploy runner
+        run: |
+          pushd main
+          ../cml/bin/cml.js runner \
+            --single \
+            --tpi-version >=0.10.0 \
+            --labels=tpi_version \
+            --token=${{ secrets.DACBD_PAT }} \
+            --cloud=aws \
+            --cloud-region=us-west-2 \
+            --cloud-type=t3.small
+  tpi-version-test:
+    needs: [tpi-version]
+    runs-on: [self-hosted, tpi_version]
+    steps:           
+      - uses: actions/checkout@v3
+      - run: |
+          which cml
+          cml --version
+          cat $(which cml.sh)
+
