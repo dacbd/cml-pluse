@@ -127,14 +127,14 @@ jobs:
           cml runner \
             --cml-version=github:iterative/cml#v0.12.0 \ 
             --single \
-            --labels=cml_version \
+            --labels=cmlversion \
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=aws \
             --cloud-region=us-west-2 \
             --cloud-type=t3.small
   cml_version-test:
     needs: [cml_version]
-    runs-on: [self-hosted, cml_version]
+    runs-on: [self-hosted, cmlversion]
     steps:
       - uses: actions/checkout@v3
       - run: |
