@@ -60,4 +60,5 @@ jobs:
           dir=$(ls $HOME/.cml)
           ls -hal $HOME/.cml/$dir/
           cat $HOME/.cml/$dir/.terraform.lock.hcl
+          cat $HOME/.cml/$dir/main.tf
 
