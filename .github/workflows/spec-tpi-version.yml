@@ -24,7 +24,6 @@ jobs:
           echo "install cml"
           pushd cml
           npm install
-          sed -i 's/return template;/console.log(template);return template;/g' src/terraform.js
           popd
       - uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -35,7 +34,7 @@ jobs:
           pushd main
           ../cml/bin/cml.js runner \
             --single \
-            --tpi-version =0.10.0 \
+            --tpi-version =0.10.3 \
             --labels=tpi_version \
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=aws \
