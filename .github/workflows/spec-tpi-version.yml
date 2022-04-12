@@ -26,6 +26,9 @@ jobs:
           npm install
           sed -i 's/return template;/console.log(template);return template;/g' src/terraform.js
           popd
+          dir=$(ls /home/runner/.cml/)
+          cd $dir
+          ls -hal
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::548501963152:role/cml_pulse_runner
