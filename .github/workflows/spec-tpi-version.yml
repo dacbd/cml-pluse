@@ -58,5 +58,7 @@ jobs:
           ls -hal $HOME
           ls -hal $HOME/.cml
           echo "break"
-          ls -hal $HOME/.terraform.d
+          dir=$(ls $HOME/.cml)
+          ls -hal $HOME/.cml/$dir/
+          cat $HOME/.cml/$dir/.terraform.lock.hcl
 
