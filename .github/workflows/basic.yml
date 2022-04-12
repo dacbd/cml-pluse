@@ -130,7 +130,7 @@ jobs:
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=aws \
             --cloud-region=us-west-2 \
-            --cloud-type=t3.small
+            --cloud-type=t3.small \
             --cml-version=github:iterative/cml#v0.12.0
   cml_version-test:
     needs: [cml_version]
