@@ -35,7 +35,7 @@ jobs:
           pushd main
           ../cml/bin/cml.js runner \
             --single \
-            --tpi-version >=0.10.0 \
+            --tpi-version =0.10.0 \
             --labels=tpi_version \
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=aws \
