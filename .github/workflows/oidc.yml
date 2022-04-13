@@ -62,40 +62,7 @@ jobs:
     needs: [setup]
     runs-on: [self-hosted, test]
     steps:           
-      - uses: actions/checkout@v3
-        with:
-          repository: dacbd/terraform-provider-iterative
-          ref: gcp-oidc
-      - name: setup go
-        uses: actions/setup-go@v2
-        with:
-          go-version: '1.17.x'
-      #- uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - run: |
           which cml
           cml --version
-
-          echo "build tpi"
-          make build
-          make install
-
-          #ls -hal $HOME
-          #ls -hal $HOME/.cml
-          echo "break"
-          dir=$(ls $HOME/.cml)
-          ls -hal $HOME/.cml/$dir/
-          #cat $HOME/.cml/$dir/.terraform.lock.hcl
-          rm -f $HOME/.cml/$dir/.terraform.lock.hcl
-          rm -rf $HOME/.cml/$dir/.terraform
-          ls -hal $HOME/.cml/$dir/
-
-          echo "orignal provider"
-          cat $HOME/.cml/$dir/main.tf
-          sed -i 's/source = "iterative\/iterative"/source = "github.com\/iterative\/iterative"/g' $HOME/.cml/$dir/main.tf
-          echo "new provider"
-          cat $HOME/.cml/$dir/main.tf
-
-          pushd $HOME/.cml/$dir
-          terraform init
-          popd
-          echo "done?"
