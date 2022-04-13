@@ -53,7 +53,7 @@ jobs:
       - run: |
           which cml
           cml --version
-          cat $(which cml.sh) | grep "tfstate"
+          #cat $(which cml.sh) | grep "tfstate"
           ls -hal $HOME
           ls -hal $HOME/.cml
           echo "break"
