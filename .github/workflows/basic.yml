@@ -1,5 +1,5 @@
 # arn:aws:iam::548501963152:role/cml_pulse_runner
-name: Basic
+name: AWS/Basic
 on:
   workflow_dispatch:
 
@@ -11,7 +11,7 @@ permissions:
 jobs:
   done:
     runs-on: ubuntu-latest
-    needs: [target-subnet-test, target-vpc-test]
+    needs: [target-subnet-test, target-vpc-test, cml_version-test]
     steps:
       - uses: actions/checkout@v3
       - uses: aws-actions/configure-aws-credentials@v1
@@ -20,11 +20,12 @@ jobs:
           aws-region: us-west-2
       - name: Clean Up
         run: |
-          states=$(aws ec2 describe-instances --region us-west-2 | jq '.Reservations[].Instances[].State.Name' | uniq)
-          if [ "$states" != '"terminated"' ]; then
-            echo "$states"
-            exit 1
-          fi
+          aws ec2 describe-instances --region us-west-2 | jq '.Reservations[].Instances[].State.Name'
+          #states=$(aws ec2 describe-instances --region us-west-2 | jq '.Reservations[].Instances[].State.Name' | uniq)
+          #if [ "$states" != '"terminated"' ]; then
+          #  echo "$states"
+          #  exit 1
+          #fi
 
   aws-oidc:
     runs-on: ubuntu-latest
