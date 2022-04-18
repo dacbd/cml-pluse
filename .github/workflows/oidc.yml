@@ -35,6 +35,7 @@ jobs:
           make install
           popd && pushd cml
           npm install
+          sed -i "s/default: '>= 0.9.10'/default: ''/g" bin/cml/runner.js
           sed -i 's/source = "iterative\/iterative"/source = "github.com\/iterative\/iterative"/g' src/terraform.js
           sed -i 's/return template;/console.log(template);return template;/g' src/terraform.js
           popd
@@ -51,7 +52,6 @@ jobs:
           pushd main
           ../cml/bin/cml.js runner \
             --single \
-            --tpi-version="*" \
             --labels=test-oidc \
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=gcp \
