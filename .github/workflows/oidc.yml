@@ -18,7 +18,7 @@ jobs:
 
       - uses: actions/checkout@v3
         with:
-          repository: dacbd/terraform-provider-iterative
+          repository: iterative/terraform-provider-iterative
           ref: gcp-oidc
           path: terraform-provider-iterative
 
