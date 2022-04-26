@@ -35,6 +35,7 @@ jobs:
   standard:
     runs-on: ubuntu-latest
     steps:
+      - uses: iterative/setup-cml@v1
       - uses: actions/checkout@v3
       - name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v0'
@@ -60,6 +61,7 @@ jobs:
   oidc:
     runs-on: ubuntu-latest
     steps:
+      - uses: iterative/setup-cml@v1
       - uses: actions/checkout@v3
       - name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v0'
