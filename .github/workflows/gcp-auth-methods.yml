@@ -1,0 +1,85 @@
+name: GCP - auth
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  as-env:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: iterative/setup-cml@v1
+      - uses: actions/checkout@v3
+      - name: run cml
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GCP_CML_RUNNER_KEY }}
+        run: |
+          cml runner \
+            --single \
+            --labels=test-as-env \
+            --token=${{ secrets.DACBD_PAT }} \
+            --cloud=gcp \
+            --cloud-region=us-west \
+            --cloud-type=e2-highcpu-2 \
+            --cloud-startup-script=ZWNobyAiZWNkc2Etc2hhMi1uaXN0cDM4NCBBQUFBRTJWalpITmhMWE5vWVRJdGJtbHpkSEF6T0RRQUFBQUlibWx6ZEhBek9EUUFBQUJoQkRZZDNzc2E2TDE1alFDNWJja0oydmlXbEExdEJ5Z3hlV295M3MwUzE0WkhNeFVNZnA3dTJ5cWZpY3BITzViK3BqZ2c3THorODBJYncxNTd3YVRaUE0reGJGMi9LR3FTN2FZVjBML1I4VmJXalZFcHp4WkVlb3hTQ3dGQTF0SFdVZz09IGNhcmRubzowMDA2MTE4OTU1NzUiID4+IC9ob21lL3VidW50dS8uc3NoL2F1dGhvcml6ZWRfa2V5cwo=
+  test-as-env:
+    needs: [as-env]
+    runs-on: [self-hosted, test-as-env]
+    steps:           
+      - uses: actions/checkout@v2
+      - run: |
+          which cml
+          cml --version
+  standard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: ${{ secrets.GCP_CML_RUNNER_KEY }}
+      - run: |
+          cml runner \
+            --single \
+            --labels=test-standard \
+            --token=${{ secrets.DACBD_PAT }} \
+            --cloud=gcp \
+            --cloud-region=us-west \
+            --cloud-type=e2-highcpu-2 \
+            --cloud-startup-script=ZWNobyAiZWNkc2Etc2hhMi1uaXN0cDM4NCBBQUFBRTJWalpITmhMWE5vWVRJdGJtbHpkSEF6T0RRQUFBQUlibWx6ZEhBek9EUUFBQUJoQkRZZDNzc2E2TDE1alFDNWJja0oydmlXbEExdEJ5Z3hlV295M3MwUzE0WkhNeFVNZnA3dTJ5cWZpY3BITzViK3BqZ2c3THorODBJYncxNTd3YVRaUE0reGJGMi9LR3FTN2FZVjBML1I4VmJXalZFcHp4WkVlb3hTQ3dGQTF0SFdVZz09IGNhcmRubzowMDA2MTE4OTU1NzUiID4+IC9ob21lL3VidW50dS8uc3NoL2F1dGhvcml6ZWRfa2V5cwo=
+  test-standard:
+    needs: [standard]
+    runs-on: [self-hosted, test-standard]
+    steps:           
+      - uses: actions/checkout@v2
+      - run: |
+          which cml
+          cml --version
+  oidc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: 'projects/200200923017/locations/global/workloadIdentityPools/gh-actions-pool/providers/github-actions'
+          service_account: 'cml-runner@cml-pulse.iam.gserviceaccount.com'
+      - run: |
+          cml runner \
+            --single \
+            --labels=test-oidc \
+            --token=${{ secrets.DACBD_PAT }} \
+            --cloud=gcp \
+            --cloud-region=us-west \
+            --cloud-type=e2-highcpu-2 \
+            --cloud-startup-script=ZWNobyAiZWNkc2Etc2hhMi1uaXN0cDM4NCBBQUFBRTJWalpITmhMWE5vWVRJdGJtbHpkSEF6T0RRQUFBQUlibWx6ZEhBek9EUUFBQUJoQkRZZDNzc2E2TDE1alFDNWJja0oydmlXbEExdEJ5Z3hlV295M3MwUzE0WkhNeFVNZnA3dTJ5cWZpY3BITzViK3BqZ2c3THorODBJYncxNTd3YVRaUE0reGJGMi9LR3FTN2FZVjBML1I4VmJXalZFcHp4WkVlb3hTQ3dGQTF0SFdVZz09IGNhcmRubzowMDA2MTE4OTU1NzUiID4+IC9ob21lL3VidW50dS8uc3NoL2F1dGhvcml6ZWRfa2V5cwo=
+  test-oidc:
+    needs: [oidc]
+    runs-on: [self-hosted, test-oidc]
+    steps:           
+      - uses: actions/checkout@v2
+      - run: |
+          which cml
+          cml --version
