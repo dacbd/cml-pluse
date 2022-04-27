@@ -18,7 +18,7 @@ jobs:
           workload_identity_provider: 'projects/200200923017/locations/global/workloadIdentityPools/gh-actions-pool/providers/github-actions'
           service_account: 'cml-runner@cml-pulse.iam.gserviceaccount.com'
       - run: |
-          cml runner \
+          TF_LOG_PROVIDER=DEBUG cml runner \
             --single \
             --cml-version=github:iterative/cml#gcp-oidc-logging \
             --labels=test-oidc \
