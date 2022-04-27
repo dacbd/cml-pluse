@@ -20,7 +20,7 @@ jobs:
       - run: |
           cml runner \
             --single \
-            --cml-version=github:iterative/cml#gcp-oidc-logging
+            --cml-version=github:iterative/cml#gcp-oidc-logging \
             --labels=test-oidc \
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=gcp \
