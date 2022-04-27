@@ -2,16 +2,35 @@ name: gcpcc test
 on:
   workflow_dispatch:
 jobs:
-  test:
+  test-env:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      #- name: 'Authenticate to Google Cloud'
-      #  uses: 'google-github-actions/auth@v0'
-      #  with:
-      #    credentials_json: ${{ secrets.GCP_CML_RUNNER_KEY }}
       - uses: dacbd/gcpcc@actionify
         id: gcpcc
         env:
           GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GCP_CML_RUNNER_KEY }}
+      - run: echo "${{ steps.gcpcc.outputs.total }}"
+  test-standard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: ${{ secrets.GCP_CML_RUNNER_KEY }}
+      - uses: dacbd/gcpcc@actionify
+        id: gcpcc
+      - run: echo "${{ steps.gcpcc.outputs.total }}"
+  test-oidc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          workload_identity_provider: 'projects/200200923017/locations/global/workloadIdentityPools/gh-actions-pool/providers/github-actions'
+          service_account: 'cml-runner@cml-pulse.iam.gserviceaccount.com'
+      - uses: dacbd/gcpcc@actionify
+        id: gcpcc
       - run: echo "${{ steps.gcpcc.outputs.total }}"
