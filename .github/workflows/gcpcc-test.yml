@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: dacbd/gcpcc@actionify
+      - uses: dacbd/gcpcc@v1
         id: gcpcc
         env:
           GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.GCP_CML_RUNNER_KEY }}
@@ -24,7 +24,7 @@ jobs:
         uses: 'google-github-actions/auth@v0'
         with:
           credentials_json: ${{ secrets.GCP_CML_RUNNER_KEY }}
-      - uses: dacbd/gcpcc@actionify
+      - uses: dacbd/gcpcc@v1
         id: gcpcc
       - run: echo "${{ steps.gcpcc.outputs.total }}"
   test-oidc:
@@ -36,6 +36,6 @@ jobs:
         with:
           workload_identity_provider: 'projects/200200923017/locations/global/workloadIdentityPools/gh-actions-pool/providers/github-actions'
           service_account: 'cml-runner@cml-pulse.iam.gserviceaccount.com'
-      - uses: dacbd/gcpcc@actionify
+      - uses: dacbd/gcpcc@v1
         id: gcpcc
       - run: echo "${{ steps.gcpcc.outputs.total }}"
