@@ -56,7 +56,8 @@ jobs:
             --cloud=gcp \
             --cloud-region=us-west \
             --cloud-type=c2-standard-4 \
-            --cloud-startup-script=ZWNobyAiZWNkc2Etc2hhMi1uaXN0cDM4NCBBQUFBRTJWalpITmhMWE5vWVRJdGJtbHpkSEF6T0RRQUFBQUlibWx6ZEhBek9EUUFBQUJoQkRZZDNzc2E2TDE1alFDNWJja0oydmlXbEExdEJ5Z3hlV295M3MwUzE0WkhNeFVNZnA3dTJ5cWZpY3BITzViK3BqZ2c3THorODBJYncxNTd3YVRaUE0reGJGMi9LR3FTN2FZVjBML1I4VmJXalZFcHp4WkVlb3hTQ3dGQTF0SFdVZz09IGNhcmRubzowMDA2MTE4OTU1NzUiID4+IC9ob21lL3VidW50dS8uc3NoL2F1dGhvcml6ZWRfa2V5cwo=
+            --cloud-startup-script=$(echo 'echo "$(curl https://github.com/'"$GITHUB_ACTOR"'.keys)" >> /home/ubuntu/.ssh/authorized_keys' | base64 -w 0)
+            cat /tmp/auth.txt
   test:
     needs: [setup]
     runs-on: [self-hosted, term-test]
