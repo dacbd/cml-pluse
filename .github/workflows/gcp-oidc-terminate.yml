@@ -10,34 +10,10 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      # tools
-      - uses: actions/checkout@v3
+      - uses: dacbd/custom-cml-tpi@main
         with:
-          repository: iterative/cml
-          path: cml
-      - uses: actions/checkout@v3
-        with:
-          repository: iterative/terraform-provider-iterative
-          ref: gcp-oidc-terminate
-          path: terraform-provider-iterative
-      - name: setup go
-        uses: actions/setup-go@v2
-        with:
-          go-version: '1.17.x'
-
-      - name: Hack together
-        run: |
-          echo "hack test together"
-          pushd terraform-provider-iterative
-          make build
-          make install
-          popd && pushd cml
-          npm install
-          sed -i "s/default: '>= 0.9.10'/default: ''/g" bin/cml/runner.js
-          sed -i 's/source = "iterative\/iterative"/source = "github.com\/iterative\/iterative"/g' src/terraform.js
-          sed -i 's/return template;/console.log(template);return template;/g' src/terraform.js
-          popd
-
+          cml: master
+          tpi: gcp-oidc-terminate
       - uses: actions/checkout@v3
         with:
           path: main
@@ -49,7 +25,7 @@ jobs:
       - name: Run hacked CML
         run: |
           pushd main
-          ../cml/bin/cml.js runner \
+          cml runner \
             --cml-version=github:iterative/cml#gcp-oidc-logging \
             --labels=term-test \
             --token=${{ secrets.DACBD_PAT }} \
