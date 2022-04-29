@@ -41,3 +41,24 @@ jobs:
       - run: |
           which cml
           cml --version
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.17.x'
+      - name: intercept tpi
+        run: |
+          cd ~/
+          pwd
+          ls -hal
+          #exit
+          pushd ~/
+          sed -i 's/iterative = { source = "iterative\/iterative", version = ">= 0.9.10" }/iterative = { source = "github.com\/iterative\/iterative" }/g' main.tf
+          sed -i 's/registry.terraform.io/github.com/g' terraform.tfstate
+          rm -rf .terraform/
+          rm .terraform.lock.hcl
+          git clone https://github.com/iterative/terraform-provider-iterative.git
+          pushd terraform-provider-iterative
+          git checkout gcp-oidc-terminate
+          make build
+          make install
+          popd
+          terraform init
