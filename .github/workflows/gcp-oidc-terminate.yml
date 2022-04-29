@@ -25,7 +25,7 @@ jobs:
       - name: Run hacked CML
         run: |
           pushd main
-          cml runner \
+          ../cml/bin/cml.js runner \
             --cml-version=github:iterative/cml#gcp-oidc-logging \
             --labels=term-test \
             --token=${{ secrets.DACBD_PAT }} \
