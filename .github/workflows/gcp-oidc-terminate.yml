@@ -46,7 +46,7 @@ jobs:
           go-version: '1.17.x'
       - name: intercept tpi
         run: |
-          cd ../../
+          cd ../../../
           pwd
           ls -hal
           #exit
