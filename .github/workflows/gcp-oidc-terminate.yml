@@ -1,4 +1,4 @@
-name: temp
+name: cml gcp terminate bug
 on:
   workflow_dispatch:
 
@@ -36,6 +36,60 @@ jobs:
   test:
     needs: [setup]
     runs-on: [self-hosted, term-test]
+    steps:           
+      - uses: actions/checkout@v2
+      - run: |
+          which cml
+          cml --version
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.17.x'
+      - name: intercept tpi
+        run: |
+          cd ../../../
+          pwd
+          ls -hal
+          #exit
+          #pushd ~/
+          sed -i 's/iterative = { source = "iterative\/iterative", version = ">= 0.9.10" }/iterative = { source = "github.com\/iterative\/iterative" }/g' main.tf
+          sed -i 's/registry.terraform.io/github.com/g' terraform.tfstate
+          rm -rf .terraform/
+          rm .terraform.lock.hcl
+          git clone https://github.com/iterative/terraform-provider-iterative.git
+          pushd terraform-provider-iterative
+          git checkout gcp-oidc-terminate
+          make build
+          make install
+          popd
+          terraform init
+  standard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dacbd/custom-cml-tpi@main
+        with:
+          cml: master
+          tpi: gcp-oidc-terminate
+      - uses: actions/checkout@v3
+        with:
+          path: main
+      - name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: ${{ secrets.GCP_CML_RUNNER_KEY }}
+      - name: Run hacked CML
+        run: |
+          pushd main
+          ../cml/bin/cml.js runner \
+            --cml-version=github:iterative/cml#gcp-oidc-logging \
+            --labels=standard \
+            --token=${{ secrets.DACBD_PAT }} \
+            --cloud=gcp \
+            --cloud-region=us-west \
+            --cloud-type=c2-standard-4 \
+            --cloud-startup-script=$(echo 'echo "$(curl https://github.com/'"$GITHUB_ACTOR"'.keys)" >> /home/ubuntu/.ssh/authorized_keys' | base64 -w 0)
+  validate:
+    needs: [standard]
+    runs-on: [self-hosted, standard]
     steps:           
       - uses: actions/checkout@v2
       - run: |
