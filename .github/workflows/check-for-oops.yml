@@ -19,6 +19,6 @@ jobs:
       with:
         token: ${{ github.token }}
         title: Instance left on in `${{ env.GCP_PROJECT }}`
-        assignees: dacbd,some_github_username
+        assignees: dacbd
         body: |
           Automatic check found `${{ steps.gcpcc.outputs.total }}` instance\s left on.
