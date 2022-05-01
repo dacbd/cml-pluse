@@ -1,0 +1,24 @@
+name: Check for instances
+on:
+  workflow_dispatch:
+  #schedule:
+  #  cron:
+  #   - ''
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3 # not technically required
+    - uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY_JSON }}
+    - uses: dacbd/gcpcc@v1
+      id: gcpcc
+    - uses: dacbd/create-issue-action@v1
+      if: steps.gcpcc.outputs.total !== 0
+      with:
+        token: ${{ github.token }}
+        title: Instance left on in `${{ env.GCP_PROJECT }}`
+        assignees: dacbd,some_github_username
+        body: |
+          Automatic check found `${{ steps.gcpcc.outputs.total }}` instance\s left on.
