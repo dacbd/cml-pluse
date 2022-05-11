@@ -22,6 +22,7 @@ jobs:
         run: |
           pushd main
           ../cml/bin/cml.js runner \
+            --single \
             --labels=test \
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=gcp \
