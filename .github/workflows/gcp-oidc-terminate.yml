@@ -13,7 +13,7 @@ jobs:
       - uses: dacbd/custom-cml-tpi@main
         with:
           cml: master
-          tpi: gcp-oidc-terminate
+          tpi: 99-codeql-problems
       - uses: actions/checkout@v3
         with:
           path: main
@@ -57,7 +57,7 @@ jobs:
           rm .terraform.lock.hcl
           git clone https://github.com/iterative/terraform-provider-iterative.git
           pushd terraform-provider-iterative
-          git checkout gcp-oidc-terminate
+          git checkout 99-codeql-problems
           make build
           make install
           popd
@@ -68,7 +68,7 @@ jobs:
       - uses: dacbd/custom-cml-tpi@main
         with:
           cml: master
-          tpi: gcp-oidc-terminate
+          tpi: 99-codeql-problems
       - uses: actions/checkout@v3
         with:
           path: main
@@ -111,7 +111,7 @@ jobs:
           rm .terraform.lock.hcl
           git clone https://github.com/iterative/terraform-provider-iterative.git
           pushd terraform-provider-iterative
-          git checkout gcp-oidc-terminate
+          git checkout 99-codeql-problems
           make build
           make install
           popd
