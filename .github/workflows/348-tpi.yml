@@ -1,6 +1,6 @@
 name: 'tpi#348'
 on:
-  workflow_dispath:
+  workflow_dispatch:
 
 jobs:
   setup:
