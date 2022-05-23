@@ -12,6 +12,7 @@ jobs:
       - name: run cml
         env:
           GOOGLE_APPLICATION_CREDENTIALS_DATA: ${{ secrets.TEMP_KEY }}
+          REPO_TOKEN: ${{ secrets.DACBD_PAT }}
         run: |
           cml runner \
             --cloud=gcp \
