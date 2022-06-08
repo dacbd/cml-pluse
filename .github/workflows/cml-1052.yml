@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: dacbd/custom-cml-tpi@main
         with:
-          cml: runner-no-special-cases
+          cml: terraform-apply-parser
       - uses: actions/checkout@v3
         with:
           path: main
