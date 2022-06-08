@@ -1,0 +1,42 @@
+name: cml#1052
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+
+jobs:
+  aws-oidc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dacbd/custom-cml-tpi@main
+        with:
+          cml: runner-no-special-cases
+      - uses: actions/checkout@v3
+        with:
+          path: main
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::548501963152:role/cml_pulse_runner
+          aws-region: us-west-2
+      - name: deploy runner
+        run: |
+          pushd main
+          ../cml/bin/cml.js runner \
+            --single \
+            --labels=basic_aws \
+            --token=${{ secrets.DACBD_PAT }} \
+            --cloud=aws \
+            --cloud-region=us-west-2 \
+            --cloud-type=t3.small
+  basic_aws_test:
+    needs: [aws-oidc]
+    runs-on: [self-hosted, basic_aws]
+    steps:           
+      - uses: actions/checkout@v3
+      - run: |
+          which cml
+          cml --version
+
