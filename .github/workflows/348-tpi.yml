@@ -1,4 +1,4 @@
-name: 'tpi#348'
+name: random
 on:
   workflow_dispatch:
 
@@ -13,7 +13,7 @@ jobs:
       - uses: dacbd/custom-cml-tpi@main
         with:
           cml: master
-          tpi: master
+          tpi: runner/nvidia-setup
       - uses: actions/checkout@v3
         with:
           path: main
