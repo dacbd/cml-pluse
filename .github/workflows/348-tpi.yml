@@ -27,7 +27,6 @@ jobs:
           pushd main
           ../cml/bin/cml.js runner \
             --single \
-            --cml-version=github:iterative/cml#trigger-tpi-348 \
             --labels=test \
             --token=${{ secrets.DACBD_PAT }} \
             --cloud=gcp \
