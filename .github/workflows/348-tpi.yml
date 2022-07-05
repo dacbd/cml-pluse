@@ -13,7 +13,7 @@ jobs:
       - uses: dacbd/custom-cml-tpi@main
         with:
           cml: master
-          tpi: runner/nvidia-setup
+          tpi: await-last-unattended-upgrades
       - uses: actions/checkout@v3
         with:
           path: main
@@ -42,3 +42,5 @@ jobs:
       - run: |
           which cml
           cml --version
+          sudo apt-get update -y
+          sudo apt-get install glances -y
