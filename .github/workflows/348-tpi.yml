@@ -55,8 +55,6 @@ jobs:
           cml: master
           tpi: systemd-run
       - uses: actions/checkout@v3
-        with:
-          path: main
       - uses: aws-actions/configure-aws-credentials@v1
         with:
           role-to-assume: arn:aws:iam::548501963152:role/cml_pulse_runner
