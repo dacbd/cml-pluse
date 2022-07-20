@@ -63,6 +63,7 @@ jobs:
           aws-region: us-west-2
       - name: deploy runner
         run: |
+          pushd main
           ../cml/bin/cml.js runner \
             --single \
             --labels=basic_aws \
