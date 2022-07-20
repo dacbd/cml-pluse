@@ -13,7 +13,7 @@ jobs:
       - uses: dacbd/custom-cml-tpi@main
         with:
           cml: master
-          tpi: await-last-unattended-upgrades
+          tpi: systemd-run
       - uses: actions/checkout@v3
         with:
           path: main
@@ -44,3 +44,40 @@ jobs:
           cml --version
           sudo apt-get update -y
           sudo apt-get install glances -y
+          sleep 120
+          which docker-credential-ecr-login
+
+  aws:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dacbd/custom-cml-tpi@main
+        with:
+          cml: master
+          tpi: systemd-run
+      - uses: actions/checkout@v3
+        with:
+          path: main
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::548501963152:role/cml_pulse_runner
+          aws-region: us-west-2
+      - name: deploy runner
+        run: |
+          cml runner \
+            --single \
+            --labels=basic_aws \
+            --token=${{ secrets.DACBD_PAT }} \
+            --cloud=aws \
+            --cloud-region=us-west-2 \
+            --cloud-type=t3.small \
+            --cloud-startup-script=$(echo 'echo "$(curl https://github.com/'"$GITHUB_ACTOR"'.keys)" >> /home/ubuntu/.ssh/authorized_keys' | base64 -w 0)
+  aws_test:
+    needs: [aws]
+    runs-on: [self-hosted, basic_aws]
+    steps:           
+      - uses: actions/checkout@v3
+      - run: |
+          which cml
+          cml --version
+          sleep 120
+          which docker-credential-ecr-login
